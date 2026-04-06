@@ -12,11 +12,6 @@ import com.ruoyi.common.annotation.RepeatSubmit;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.ServletUtils;
 
-/**
- * 防止重复提交拦截器
- *
- * @author ruoyi
- */
 @Component
 public abstract class RepeatSubmitInterceptor implements HandlerInterceptor
 {
@@ -46,12 +41,5 @@ public abstract class RepeatSubmitInterceptor implements HandlerInterceptor
         }
     }
 
-    /**
-     * 验证是否重复提交由子类实现具体的防重复提交的规则
-     *
-     * @param request 请求对象
-     * @param annotation 防复注解
-     * @return 结果
-     */
     public abstract boolean isRepeatSubmit(HttpServletRequest request, RepeatSubmit annotation) throws Exception;
 }

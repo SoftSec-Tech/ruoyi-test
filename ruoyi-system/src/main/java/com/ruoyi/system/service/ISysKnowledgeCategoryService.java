@@ -3,7 +3,6 @@ package com.ruoyi.system.service;
 import java.util.List;
 import com.ruoyi.system.domain.SysKnowledgeCategory;
 
-/** Category service. */
 public interface ISysKnowledgeCategoryService
 {
     SysKnowledgeCategory selectCategoryById(Long categoryId);

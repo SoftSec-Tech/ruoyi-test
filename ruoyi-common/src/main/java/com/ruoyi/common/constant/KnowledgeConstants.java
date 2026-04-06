@@ -1,6 +1,5 @@
 package com.ruoyi.common.constant;
 
-/** Constants for the knowledge-base feature (intentionally mixed concerns for review drills). */
 public final class KnowledgeConstants
 {
     public static final String SNIPPET_STATUS_DRAFT = "0";

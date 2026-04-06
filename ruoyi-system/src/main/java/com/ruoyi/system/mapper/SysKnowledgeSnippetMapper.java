@@ -4,7 +4,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import com.ruoyi.system.domain.SysKnowledgeSnippet;
 
-/** Snippet mapper. */
 public interface SysKnowledgeSnippetMapper
 {
     SysKnowledgeSnippet selectSnippetById(Long snippetId);

@@ -7,7 +7,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.xss.Xss;
 
-/** Table sys_knowledge_category. */
 public class SysKnowledgeCategory extends BaseEntity
 {
     private static final long serialVersionUID = 1L;

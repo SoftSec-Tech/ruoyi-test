@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-/** Overly broad pointcut: every service-layer method. */
 @Aspect
 @Component
 public class KnowledgeSnippetAuditAspect
@@ -19,7 +18,7 @@ public class KnowledgeSnippetAuditAspect
     {
         if (log.isDebugEnabled())
         {
-            log.debug("knowledge-audit stub: {}", point.getSignature().toShortString());
+            log.debug("{}", point.getSignature().toShortString());
         }
     }
 }

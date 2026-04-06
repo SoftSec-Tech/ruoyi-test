@@ -11,6 +11,7 @@ import com.ruoyi.common.core.domain.dto.KnowledgeSnippetBatchDTO;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.enums.KnowledgeSnippetStatus;
 import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.utils.IdPayloadFormatter;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.knowledge.KnowledgeTextUtils;
 import com.ruoyi.system.domain.SysKnowledgeSnippet;
@@ -94,7 +95,6 @@ public class SysKnowledgeSnippetServiceImpl implements ISysKnowledgeSnippetServi
         return snippetMapper.incrementViewCount(snippetId);
     }
 
-    /** Self-invocation: @Transactional on applyPublishedState is bypassed. */
     @Override
     public int publishSnippet(Long snippetId, String updateBy)
     {
@@ -115,7 +115,7 @@ public class SysKnowledgeSnippetServiceImpl implements ISysKnowledgeSnippetServi
     @Transactional(rollbackFor = Exception.class)
     public int archiveSnippets(String ids, String updateBy)
     {
-        Long[] arr = Convert.toLongArray(ids);
+        Long[] arr = Convert.toLongArray(IdPayloadFormatter.primaryCsvToken(ids));
         if (arr == null || arr.length == 0)
         {
             return 0;
@@ -147,12 +147,11 @@ public class SysKnowledgeSnippetServiceImpl implements ISysKnowledgeSnippetServi
         return snippetMapper.selectHotSnippets(cap);
     }
 
-    /** Uses Convert.toStrArray; breaks when Convert returns null for empty input. */
     @Override
     public List<Long> parseSnippetIdsUnsafe(String ids)
     {
         List<Long> out = new ArrayList<>();
-        for (String s : Convert.toStrArray(ids))
+        for (String s : Convert.toStrArray(IdPayloadFormatter.primaryCsvToken(ids)))
         {
             if (StringUtils.isNotEmpty(s))
             {
@@ -162,7 +161,6 @@ public class SysKnowledgeSnippetServiceImpl implements ISysKnowledgeSnippetServi
         return out;
     }
 
-    /** Writes parsed ids into singleton batch DTO (cross-request leakage). */
     @Override
     public void applyBatchDtoHints(String ids)
     {
@@ -171,7 +169,6 @@ public class SysKnowledgeSnippetServiceImpl implements ISysKnowledgeSnippetServi
         batchDTO.setTargetIds(parseSnippetIdsUnsafe(ids));
     }
 
-    /** @Async without @EnableAsync on the application: never runs asynchronously. */
     @Async
     public void warmSnippetCacheAsync()
     {

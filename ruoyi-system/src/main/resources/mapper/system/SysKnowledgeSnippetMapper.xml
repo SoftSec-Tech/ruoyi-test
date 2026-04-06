@@ -31,7 +31,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where snippet_id = #{snippetId}
     </select>
 
-    <!-- sortColumn uses ${} without whitelist -->
     <select id="selectSnippetList" parameterType="SysKnowledgeSnippet" resultMap="SysKnowledgeSnippetResult">
         <include refid="selectSnippetVo"/>
         <where>

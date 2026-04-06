@@ -3,7 +3,6 @@ package com.ruoyi.system.service;
 import java.util.List;
 import com.ruoyi.system.domain.SysKnowledgeSnippet;
 
-/** Snippet service. */
 public interface ISysKnowledgeSnippetService
 {
     SysKnowledgeSnippet selectSnippetById(Long snippetId);

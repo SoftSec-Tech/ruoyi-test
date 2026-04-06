@@ -5,9 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
-/**
- * static Environment field is never injected by Spring; moduleProperty() NPEs when called.
- */
 @Configuration
 public class KnowledgeModuleConfig
 {

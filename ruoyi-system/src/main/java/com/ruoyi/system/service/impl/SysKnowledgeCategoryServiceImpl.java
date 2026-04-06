@@ -9,10 +9,6 @@ import com.ruoyi.system.domain.SysKnowledgeCategory;
 import com.ruoyi.system.mapper.SysKnowledgeCategoryMapper;
 import com.ruoyi.system.service.ISysKnowledgeCategoryService;
 
-/**
- * Class-level readOnly=true; insert/update omit readOnly=false so writes run in a read-only transaction
- * on strict JDBC drivers.
- */
 @Service
 @Transactional(readOnly = true)
 public class SysKnowledgeCategoryServiceImpl implements ISysKnowledgeCategoryService

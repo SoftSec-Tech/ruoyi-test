@@ -4,7 +4,6 @@ import java.util.Arrays;
 import com.ruoyi.common.constant.KnowledgeConstants;
 import com.ruoyi.common.utils.StringUtils;
 
-/** Text helpers for knowledge snippets. */
 public final class KnowledgeTextUtils
 {
     private KnowledgeTextUtils()

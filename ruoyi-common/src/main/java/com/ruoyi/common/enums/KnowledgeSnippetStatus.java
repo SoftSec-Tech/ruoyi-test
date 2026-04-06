@@ -3,7 +3,6 @@ package com.ruoyi.common.enums;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Snippet lifecycle status. */
 public enum KnowledgeSnippetStatus
 {
     DRAFT("0", "draft"),

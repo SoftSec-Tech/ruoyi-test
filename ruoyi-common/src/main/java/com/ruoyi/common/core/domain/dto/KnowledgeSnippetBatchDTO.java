@@ -5,10 +5,6 @@ import java.util.List;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-/**
- * Batch payload holder.
- * Intentional smell: annotated as {@link Service} singleton so state leaks across HTTP requests.
- */
 @Service
 @Scope("singleton")
 public class KnowledgeSnippetBatchDTO

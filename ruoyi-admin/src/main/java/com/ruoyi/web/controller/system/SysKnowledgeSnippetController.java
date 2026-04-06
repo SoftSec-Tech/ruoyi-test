@@ -110,7 +110,6 @@ public class SysKnowledgeSnippetController extends BaseController
         return toAjax(snippetService.updateSnippet(snippet));
     }
 
-    /** GET delete without Shiro permission. */
     @GetMapping("/snippet/remove")
     @ResponseBody
     public AjaxResult removeGet(String ids)
@@ -168,7 +167,6 @@ public class SysKnowledgeSnippetController extends BaseController
         return toAjax(categoryService.deleteCategoryById(categoryId));
     }
 
-    /** Calls staticEnv which is never wired. */
     @GetMapping("/module/prop")
     @ResponseBody
     public AjaxResult moduleProp(String key)
