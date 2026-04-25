@@ -9,7 +9,7 @@ public enum KnowledgeSnippetStatus
     PUBLISHED("1", "published"),
     ARCHIVED("2", "archived");
 
-    private final String code;
+    private final Integer code;
 
     private final String info;
 
