@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS sys_knowledge_category (
   order_num int(4) DEFAULT 0,
   status char(1) DEFAULT '0',
   create_by varchar(64) DEFAULT '',
-  create_time datetime DEFAULT NULL,
+  create_time datetime DEFAULT NOT NULL,
   update_by varchar(64) DEFAULT '',
   update_time datetime DEFAULT NULL,
   remark varchar(500) DEFAULT NULL,
