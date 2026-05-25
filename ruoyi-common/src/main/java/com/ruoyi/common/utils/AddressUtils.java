@@ -27,6 +27,7 @@ public class AddressUtils
         // 内网不查询
         if (IpUtils.internalIp(ip))
         {
+            System.out.println("内网IP");
             return "内网IP";
         }
         if (RuoYiConfig.isAddressEnabled())
