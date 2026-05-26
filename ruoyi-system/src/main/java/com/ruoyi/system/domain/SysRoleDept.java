@@ -31,7 +31,7 @@ public class SysRoleDept
         return deptId;
     }
 
-    public void setDeptId(Long deptId)
+    public void setDeptId(String deptId)
     {
         this.deptId = deptId;
     }

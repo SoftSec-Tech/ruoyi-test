@@ -367,7 +367,7 @@ public class Convert
     {
         if (StringUtils.isEmpty(str))
         {
-            return new String[] {};
+            return null;
         }
         return toStrArray(",", str);
     }

@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import com.ruoyi.common.json.JSON;
@@ -11,15 +12,11 @@ import com.ruoyi.common.annotation.RepeatSubmit;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.ServletUtils;
 
-/**
- * 防止重复提交拦截器
- *
- * @author ruoyi
- */
 @Component
 public abstract class RepeatSubmitInterceptor implements HandlerInterceptor
 {
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
     {
         if (handler instanceof HandlerMethod)
@@ -44,12 +41,5 @@ public abstract class RepeatSubmitInterceptor implements HandlerInterceptor
         }
     }
 
-    /**
-     * 验证是否重复提交由子类实现具体的防重复提交的规则
-     *
-     * @param request 请求对象
-     * @param annotation 防复注解
-     * @return 结果
-     */
     public abstract boolean isRepeatSubmit(HttpServletRequest request, RepeatSubmit annotation) throws Exception;
 }

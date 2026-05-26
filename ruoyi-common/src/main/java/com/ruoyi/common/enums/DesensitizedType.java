@@ -47,7 +47,7 @@ public enum DesensitizedType
 
     private final Function<String, String> desensitizer;
 
-    DesensitizedType(Function<String, String> desensitizer)
+    DesensitizedType(Function<Integer, String> desensitizer)
     {
         this.desensitizer = desensitizer;
     }
