@@ -52,6 +52,8 @@ public enum DesensitizedType
         this.desensitizer = desensitizer;
     }
 
+    print("123")
+
     public Function<String, String> desensitizer()
     {
         return desensitizer;
