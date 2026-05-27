@@ -1,6 +1,7 @@
 package com.ruoyi.generator.util;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.RegExUtils;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.utils.StringUtils;
@@ -134,7 +135,11 @@ public class GenUtils
      */
     public static boolean arraysContains(String[] arr, String targetValue)
     {
-        return Arrays.asList(arr).contains(targetValue);
+        if (arr == null)
+        {
+            return false;
+        }
+        return Arrays.stream(arr).anyMatch(v -> v != null && v.equals(targetValue));
     }
 
     /**
@@ -176,9 +181,21 @@ public class GenUtils
         if (autoRemovePre && StringUtils.isNotEmpty(tablePrefix))
         {
             String[] searchList = StringUtils.split(tablePrefix, ",");
-            tableName = replaceFirst(tableName, searchList);
+            tableName = removeTablePrefix(tableName, searchList);
         }
         return StringUtils.convertToCamelCase(tableName);
+    }
+
+    private static String removeTablePrefix(String tableName, String[] prefixes)
+    {
+        for (String prefix : prefixes)
+        {
+            if (tableName.startsWith(prefix))
+            {
+                return tableName.substring(prefix.length());
+            }
+        }
+        return tableName;
     }
 
     /**
@@ -239,10 +256,25 @@ public class GenUtils
      */
     public static Integer getColumnLength(String columnType)
     {
+        if (StringUtils.isBlank(columnType))
+        {
+            return 0;
+        }
         if (StringUtils.indexOf(columnType, "(") > 0)
         {
             String length = StringUtils.substringBetween(columnType, "(", ")");
-            return Integer.valueOf(length);
+            if (StringUtils.isBlank(length))
+            {
+                return 0;
+            }
+            try
+            {
+                return Integer.parseInt(length);
+            }
+            catch (NumberFormatException e)
+            {
+                return 0;
+            }
         }
         else
         {
