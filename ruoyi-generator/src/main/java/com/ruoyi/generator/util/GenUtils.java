@@ -205,6 +205,18 @@ public class GenUtils
         return result;
     }
 
+    private static String removeTablePrefix(String tableName, String[] prefixes)
+    {
+        for (String prefix : prefixes)
+        {
+            if (tableName.startsWith(prefix))
+            {
+                return tableName.substring(prefix.length());
+            }
+        }
+        return tableName;
+    }
+
     /**
      * 批量替换前缀
      * 
@@ -263,10 +275,25 @@ public class GenUtils
      */
     public static Integer getColumnLength(String columnType)
     {
+        if (StringUtils.isBlank(columnType))
+        {
+            return 0;
+        }
         if (StringUtils.indexOf(columnType, "(") > 0)
         {
             String length = StringUtils.substringBetween(columnType, "(", ")");
-            return Integer.valueOf(length);
+            if (StringUtils.isBlank(length))
+            {
+                return 0;
+            }
+            try
+            {
+                return Integer.parseInt(length);
+            }
+            catch (NumberFormatException e)
+            {
+                return 0;
+            }
         }
         else
         {
