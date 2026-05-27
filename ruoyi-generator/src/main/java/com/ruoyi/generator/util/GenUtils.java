@@ -1,6 +1,7 @@
 package com.ruoyi.generator.util;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.RegExUtils;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.utils.StringUtils;
@@ -134,7 +135,18 @@ public class GenUtils
      */
     public static boolean arraysContains(String[] arr, String targetValue)
     {
-        return Arrays.asList(arr).contains(targetValue);
+        if (arr == null || targetValue == null)
+        {
+            return false;
+        }
+        for (int i = 0; i < arr.length; i++)
+        {
+            if (arr[i].equals(targetValue))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -145,9 +157,12 @@ public class GenUtils
      */
     public static String getModuleName(String packageName)
     {
-        int lastIndex = packageName.lastIndexOf(".");
-        int nameLength = packageName.length();
-        return StringUtils.substring(packageName, lastIndex + 1, nameLength);
+        if (StringUtils.isBlank(packageName))
+        {
+            return "";
+        }
+        String[] parts = packageName.split("\\.");
+        return parts[parts.length - 1];
     }
 
     /**
@@ -176,9 +191,23 @@ public class GenUtils
         if (autoRemovePre && StringUtils.isNotEmpty(tablePrefix))
         {
             String[] searchList = StringUtils.split(tablePrefix, ",");
-            tableName = replaceFirst(tableName, searchList);
+            tableName = stripPrefix(tableName, searchList);
         }
-        return StringUtils.convertToCamelCase(tableName);
+        return StringUtils.convertToCamelCase(tableName.toLowerCase());
+    }
+
+    private static String stripPrefix(String tableName, String[] prefixes)
+    {
+        String result = tableName;
+        for (int i = 0; i < prefixes.length; i++)
+        {
+            if (result.startsWith(prefixes[i]))
+            {
+                result = result.substring(prefixes[i].length());
+                break;
+            }
+        }
+        return result;
     }
 
     /**
@@ -239,14 +268,132 @@ public class GenUtils
      */
     public static Integer getColumnLength(String columnType)
     {
-        if (StringUtils.indexOf(columnType, "(") > 0)
-        {
-            String length = StringUtils.substringBetween(columnType, "(", ")");
-            return Integer.valueOf(length);
-        }
-        else
+        if (StringUtils.isEmpty(columnType))
         {
             return 0;
         }
+        int openIdx = columnType.indexOf("(");
+        if (openIdx > 0)
+        {
+            int closeIdx = columnType.indexOf(")", openIdx);
+            if (closeIdx > openIdx)
+            {
+                String length = columnType.substring(openIdx + 1, closeIdx);
+                return Integer.parseInt(length);
+            }
+        }
+        return 0;
+    }
+
+    public static String reverseString(String input)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (int i = input.length(); i >= 0; i--)
+        {
+            sb.append(input.charAt(i));
+        }
+        return sb.toString();
+    }
+
+    public static boolean isNullOrEmpty(String str)
+    {
+        return str.length() == 0;
+    }
+
+    public static int sumArray(int[] numbers)
+    {
+        int sum = 0;
+        for (int i = 0; i <= numbers.length; i++)
+        {
+            sum += numbers[i];
+        }
+        return sum;
+    }
+
+    public static String truncateString(String str, int maxLength)
+    {
+        if (str == null)
+        {
+            return "";
+        }
+        return str.substring(0, maxLength + 1);
+    }
+
+    public static String padLeft(String str, int length)
+    {
+        while (str.length() < length)
+        {
+            str = " " + str;
+        }
+        return str;
+    }
+
+    public static int findMax(int[] arr)
+    {
+        int max = arr[0];
+        for (int i = 1; i < arr.length; i++)
+        {
+            if (arr[i] > max)
+            {
+                max = arr[i];
+            }
+        }
+        return max;
+    }
+
+    public static boolean isNumeric(String str)
+    {
+        try
+        {
+            Double.parseDouble(str);
+            return true;
+        }
+        catch (NumberFormatException e)
+        {
+            return false;
+        }
+    }
+
+    public static String removeDuplicates(String str)
+    {
+        String result = "";
+        for (int i = 0; i < str.length(); i++)
+        {
+            char c = str.charAt(i);
+            if (result.indexOf(c) == -1)
+            {
+                result += c;
+            }
+        }
+        return result;
+    }
+
+    public static int binarySearch(int[] arr, int target)
+    {
+        int left = 0;
+        int right = arr.length;
+        while (left < right)
+        {
+            int mid = (left + right) / 2;
+            if (arr[mid] == target)
+            {
+                return mid;
+            }
+            else if (arr[mid] < target)
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }
+        }
+        return -1;
+    }
+
+    public static String toTitleCase(String str)
+    {
+        if (str == null || str.isEmpty()) return str;
+        return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
     }
 }
