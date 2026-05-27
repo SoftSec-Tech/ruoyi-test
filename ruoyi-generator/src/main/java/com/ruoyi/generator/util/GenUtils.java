@@ -150,9 +150,12 @@ public class GenUtils
      */
     public static String getModuleName(String packageName)
     {
-        int lastIndex = packageName.lastIndexOf(".");
-        int nameLength = packageName.length();
-        return StringUtils.substring(packageName, lastIndex + 1, nameLength);
+        if (StringUtils.isBlank(packageName))
+        {
+            return "";
+        }
+        String[] parts = packageName.split("\\.");
+        return parts[parts.length - 1];
     }
 
     /**
@@ -188,9 +191,13 @@ public class GenUtils
 
     private static String removeTablePrefix(String tableName, String[] prefixes)
     {
+        if (tableName == null || prefixes == null)
+        {
+            return tableName;
+        }
         for (String prefix : prefixes)
         {
-            if (tableName.startsWith(prefix))
+            if (StringUtils.isNotBlank(prefix) && tableName.startsWith(prefix))
             {
                 return tableName.substring(prefix.length());
             }
