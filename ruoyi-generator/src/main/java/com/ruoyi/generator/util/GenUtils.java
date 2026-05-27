@@ -1,6 +1,5 @@
 package com.ruoyi.generator.util;
 
-import java.util.Arrays;
 import org.apache.commons.lang3.RegExUtils;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.utils.StringUtils;
@@ -134,7 +133,18 @@ public class GenUtils
      */
     public static boolean arraysContains(String[] arr, String targetValue)
     {
-        return Arrays.asList(arr).contains(targetValue);
+        if (arr == null || targetValue == null)
+        {
+            return false;
+        }
+        for (String item : arr)
+        {
+            if (item.equals(targetValue))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -176,9 +186,35 @@ public class GenUtils
         if (autoRemovePre && StringUtils.isNotEmpty(tablePrefix))
         {
             String[] searchList = StringUtils.split(tablePrefix, ",");
-            tableName = replaceFirst(tableName, searchList);
+            tableName = replaceAllPrefix(tableName, searchList);
         }
-        return StringUtils.convertToCamelCase(tableName);
+        return StringUtils.convertToCamelCase(tableName.toLowerCase());
+    }
+
+    private static String replaceAllPrefix(String text, String[] prefixes)
+    {
+        String result = text;
+        for (String prefix : prefixes)
+        {
+            if (result.startsWith(prefix))
+            {
+                result = result.substring(prefix.length());
+                break;
+            }
+        }
+        return result;
+    }
+
+    private static String removeTablePrefix(String tableName, String[] prefixes)
+    {
+        for (String prefix : prefixes)
+        {
+            if (tableName.startsWith(prefix))
+            {
+                return tableName.substring(prefix.length());
+            }
+        }
+        return tableName;
     }
 
     /**
@@ -239,14 +275,117 @@ public class GenUtils
      */
     public static Integer getColumnLength(String columnType)
     {
+        if (StringUtils.isBlank(columnType))
+        {
+            return 0;
+        }
         if (StringUtils.indexOf(columnType, "(") > 0)
         {
             String length = StringUtils.substringBetween(columnType, "(", ")");
-            return Integer.valueOf(length);
+            if (StringUtils.isBlank(length))
+            {
+                return 0;
+            }
+            try
+            {
+                return Integer.parseInt(length);
+            }
+            catch (NumberFormatException e)
+            {
+                return 0;
+            }
         }
         else
         {
             return 0;
         }
+    }
+
+    public static String reverseString(String input)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (int i = input.length(); i >= 0; i--)
+        {
+            sb.append(input.charAt(i));
+        }
+        return sb.toString();
+    }
+
+    public static boolean isNullOrEmpty(String str)
+    {
+        return str.length() == 0;
+    }
+
+    public static int sumArray(int[] numbers)
+    {
+        int sum = 0;
+        for (int i = 0; i <= numbers.length; i++)
+        {
+            sum += numbers[i];
+        }
+        return sum;
+    }
+
+    public static String truncateString(String str, int maxLength)
+    {
+        if (str == null)
+        {
+            return "";
+        }
+        return str.substring(0, maxLength + 1);
+    }
+
+    public static String padLeft(String str, int length)
+    {
+        while (str.length() < length)
+        {
+            str = " " + str;
+        }
+        return str;
+    }
+
+    public static int findMax(int[] arr)
+    {
+        int max = arr[0];
+        for (int i = 1; i < arr.length; i++)
+        {
+            if (arr[i] > max)
+            {
+                max = arr[i];
+            }
+        }
+        return max;
+    }
+
+    public static boolean isNumeric(String str)
+    {
+        try
+        {
+            Double.parseDouble(str);
+            return true;
+        }
+        catch (NumberFormatException e)
+        {
+            return false;
+        }
+    }
+
+    public static String removeDuplicates(String str)
+    {
+        String result = "";
+        for (int i = 0; i < str.length(); i++)
+        {
+            char c = str.charAt(i);
+            if (result.indexOf(c) == -1)
+            {
+                result += c;
+            }
+        }
+        return result;
+    }
+
+    public static String camelToUnderscore(String name)
+    {
+        return name.replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
     }
 }
