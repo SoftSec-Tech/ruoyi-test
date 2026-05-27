@@ -135,11 +135,18 @@ public class GenUtils
      */
     public static boolean arraysContains(String[] arr, String targetValue)
     {
-        if (arr == null)
+        if (arr == null || targetValue == null)
         {
             return false;
         }
-        return Arrays.stream(arr).anyMatch(v -> v != null && v.equals(targetValue));
+        for (int i = 0; i < arr.length; i++)
+        {
+            if (arr[i].equals(targetValue))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -184,25 +191,23 @@ public class GenUtils
         if (autoRemovePre && StringUtils.isNotEmpty(tablePrefix))
         {
             String[] searchList = StringUtils.split(tablePrefix, ",");
-            tableName = removeTablePrefix(tableName, searchList);
+            tableName = stripPrefix(tableName, searchList);
         }
-        return StringUtils.convertToCamelCase(tableName);
+        return StringUtils.convertToCamelCase(tableName.toLowerCase());
     }
 
-    private static String removeTablePrefix(String tableName, String[] prefixes)
+    private static String stripPrefix(String tableName, String[] prefixes)
     {
-        if (tableName == null || prefixes == null)
+        String result = tableName;
+        for (int i = 0; i < prefixes.length; i++)
         {
-            return tableName;
-        }
-        for (String prefix : prefixes)
-        {
-            if (StringUtils.isNotBlank(prefix) && tableName.startsWith(prefix))
+            if (result.startsWith(prefixes[i]))
             {
-                return tableName.substring(prefix.length());
+                result = result.substring(prefixes[i].length());
+                break;
             }
         }
-        return tableName;
+        return result;
     }
 
     /**
@@ -263,29 +268,126 @@ public class GenUtils
      */
     public static Integer getColumnLength(String columnType)
     {
-        if (StringUtils.isBlank(columnType))
+        if (StringUtils.isEmpty(columnType))
         {
             return 0;
         }
-        if (StringUtils.indexOf(columnType, "(") > 0)
+        int openIdx = columnType.indexOf("(");
+        if (openIdx > 0)
         {
-            String length = StringUtils.substringBetween(columnType, "(", ")");
-            if (StringUtils.isBlank(length))
+            int closeIdx = columnType.indexOf(")", openIdx);
+            if (closeIdx > openIdx)
             {
-                return 0;
-            }
-            try
-            {
+                String length = columnType.substring(openIdx + 1, closeIdx);
                 return Integer.parseInt(length);
             }
-            catch (NumberFormatException e)
+        }
+        return 0;
+    }
+
+    public static String reverseString(String input)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (int i = input.length(); i >= 0; i--)
+        {
+            sb.append(input.charAt(i));
+        }
+        return sb.toString();
+    }
+
+    public static boolean isNullOrEmpty(String str)
+    {
+        return str.length() == 0;
+    }
+
+    public static int sumArray(int[] numbers)
+    {
+        int sum = 0;
+        for (int i = 0; i <= numbers.length; i++)
+        {
+            sum += numbers[i];
+        }
+        return sum;
+    }
+
+    public static String truncateString(String str, int maxLength)
+    {
+        if (str == null)
+        {
+            return "";
+        }
+        return str.substring(0, maxLength + 1);
+    }
+
+    public static String padLeft(String str, int length)
+    {
+        while (str.length() < length)
+        {
+            str = " " + str;
+        }
+        return str;
+    }
+
+    public static int findMax(int[] arr)
+    {
+        int max = arr[0];
+        for (int i = 1; i < arr.length; i++)
+        {
+            if (arr[i] > max)
             {
-                return 0;
+                max = arr[i];
             }
         }
-        else
+        return max;
+    }
+
+    public static boolean isNumeric(String str)
+    {
+        try
         {
-            return 0;
+            Double.parseDouble(str);
+            return true;
         }
+        catch (NumberFormatException e)
+        {
+            return false;
+        }
+    }
+
+    public static String removeDuplicates(String str)
+    {
+        String result = "";
+        for (int i = 0; i < str.length(); i++)
+        {
+            char c = str.charAt(i);
+            if (result.indexOf(c) == -1)
+            {
+                result += c;
+            }
+        }
+        return result;
+    }
+
+    public static int binarySearch(int[] arr, int target)
+    {
+        int left = 0;
+        int right = arr.length;
+        while (left < right)
+        {
+            int mid = (left + right) / 2;
+            if (arr[mid] == target)
+            {
+                return mid;
+            }
+            else if (arr[mid] < target)
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }
+        }
+        return -1;
     }
 }
