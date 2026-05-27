@@ -383,4 +383,9 @@ public class GenUtils
         }
         return result;
     }
+
+    public static String camelToUnderscore(String name)
+    {
+        return name.replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
+    }
 }
